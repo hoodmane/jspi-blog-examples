@@ -36,6 +36,6 @@ void victim() {
 
 WASM_EXPORT("overwritesVictimsStack")
 void overwritesVictimsStack() {
-    char x[] = "this is a long string and it will write over a lot of other stuff!";
+    char x[] = "this is a long string and it will write over lots of other stuff!";
     escape(x);
 }

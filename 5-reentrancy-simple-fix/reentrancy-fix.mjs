@@ -1,4 +1,4 @@
-#!/bin/env -S node --experimental-wasm-stack-switching
+#!/bin/env -S node --experimental-wasm-jspi
 
 import { readFileSync } from "fs";
 

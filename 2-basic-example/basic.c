@@ -9,7 +9,6 @@ void logInt(int value);
 WASM_IMPORT("logString")
 void logString(const char* value);
 
-// In our real code, we would be running a Python function here
 WASM_EXPORT("fakePyFunc")
 void fakePyFunc(int x) {
     logString("About to call awaitFakeFetch");

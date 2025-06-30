@@ -1,4 +1,4 @@
-#!/bin/env -S node --experimental-wasm-stack-switching
+#!/bin/env -S node --experimental-wasm-jspi
 import { readFileSync } from "fs";
 
 function logInt(x) {
@@ -22,19 +22,17 @@ function awaitInt(promise) {
   return promise;
 }
 
-async function asyncHttpRequest(x) {
-  // Just sleep lol
-  console.log("JS: asyncHttpRequest: sleeping");
+async function fakeAsyncHttpRequest(x) {
+  console.log("JS: fakeAsyncHttpRequest: sleeping");
   await sleep(1000);
-  console.log("JS: asyncHttpRequest: slept");
+  console.log("JS: fakeAsyncHttpRequest: slept");
   return x + 1;
 }
 
-async function asyncDbQuery(x) {
-  // Just sleep lol
-  console.log("JS: asyncDbQuery: sleeping");
+async function fakeAsyncDbQuery(x) {
+  console.log("JS: fakeAsyncDbQuery: sleeping");
   await sleep(2000);
-  console.log("JS: asyncDbQuery: slept");
+  console.log("JS: fakeAsyncDbQuery: slept");
   return x * x;
 }
 
@@ -42,8 +40,8 @@ const imports = {
   env: {
     logInt,
     logString,
-    asyncHttpRequest,
-    asyncDbQuery,
+    fakeAsyncHttpRequest,
+    fakeAsyncDbQuery,
     awaitInt: new WebAssembly.Suspending(awaitInt),
   },
 };
@@ -53,8 +51,8 @@ export const { instance } = await WebAssembly.instantiate(
   imports,
 );
 const HEAP = new Uint8Array(instance.exports.memory.buffer);
-export const pythonFunction = WebAssembly.promising(
-  instance.exports.pythonFunction,
+export const fakePyFunc = WebAssembly.promising(
+  instance.exports.fakePyFunc,
 );
 
-await pythonFunction(4);
+await fakePyFunc(4);

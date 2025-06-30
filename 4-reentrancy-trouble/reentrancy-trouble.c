@@ -6,6 +6,8 @@ void logStrStr(const char* str, const char* value);
 WASM_IMPORT("sleep")
 void sleep(int x);
 
+// Escape is a no-op function to ensure that spill stack space is actually allocated.
+// Without this, clang will optimize out stack operations.
 WASM_IMPORT("escape")
 void escape(void* x);
 
@@ -14,10 +16,11 @@ WASM_EXPORT("allocateOnStackAndSleep")
 void allocateOnStackAndSleep() {
     // Allocate 4 bytes on stack. (Stack always required to be aligned to 16 bytes.)
     int x[] = {7};
+    // Force the compiler to store x on the spill stack
     escape(x);
     // Let victim allocate its stack space
     sleep(0);
-    // Reset the stack pointer
+    // Now we will reset the stack pointer in the epilogue
 }
 
 WASM_EXPORT("victim")
@@ -36,6 +39,6 @@ void victim() {
 
 WASM_EXPORT("overwritesVictimsStack")
 void overwritesVictimsStack() {
-    char x[] = "this is a long string and it will write over a lot of other stuff!";
+    char x[] = "this is a long string and it will write over lots of other stuff!";
     escape(x);
 }
