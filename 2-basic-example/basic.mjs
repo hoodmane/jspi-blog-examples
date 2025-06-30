@@ -20,7 +20,7 @@ function logString(ptr) {
   console.log("C:", new TextDecoder().decode(HEAP.slice(ptr, endPtr)));
 }
 
-// Our async function we want to consume
+// Our async function we want to call from synchronous C code
 async function awaitFakeFetch(x) {
   console.log("JS: fetching (fake)...");
   await sleep(1000); // simulate a slow fetch request
@@ -41,8 +41,10 @@ export const { instance } = await WebAssembly.instantiate(
   imports,
 );
 const HEAP = new Uint8Array(instance.exports.memory.buffer);
+
 export const fakePyFunc = WebAssembly.promising(
   instance.exports.fakePyFunc,
 );
+
 console.log("JS: Calling pythonFunction(3)");
 await fakePyFunc(3);

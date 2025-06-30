@@ -11,8 +11,8 @@ void logString(const char* value);
 
 WASM_EXPORT("fakePyFunc")
 void fakePyFunc(int x) {
-    logString("About to call awaitFakeFetch");
-    int res = awaitFakeFetch(x);
-    logString("Got result:");
-    logInt(res);
+  logString("About to call awaitFakeFetch");
+  int res = awaitFakeFetch(x);
+  logString("Got result:");
+  logInt(res);
 }

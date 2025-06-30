@@ -23,6 +23,7 @@ void fakePyFunc(int x) {
   __externref_t promiseHttpRequest = fakeAsyncHttpRequest(x);
   logString("Call fakeAsyncDbQuery");
   __externref_t promiseDbQuery = fakeAsyncDbQuery(x);
+
   logString("Suspending for promiseHttpRequest");
   int res1 = awaitInt(promiseHttpRequest);
   logString("-- got res1:");
