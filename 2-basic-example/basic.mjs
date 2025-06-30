@@ -1,9 +1,16 @@
 #!/bin/env -S node --experimental-wasm-stack-switching
 import { readFileSync } from "fs";
 
+// Utils
+function sleep(ms) {
+  return new Promise((res) => setTimeout(res, ms));
+}
+
+// Logging imports (these replace printf since we don't have libc)
 function logInt(x) {
   console.log("C:", x);
 }
+
 function logString(ptr) {
   let endPtr = ptr;
   // Locate null byte terminator
@@ -13,15 +20,11 @@ function logString(ptr) {
   console.log("C:", new TextDecoder().decode(HEAP.slice(ptr, endPtr)));
 }
 
-function sleep(ms) {
-  return new Promise((res) => setTimeout(res, ms));
-}
-
-async function awaitAsyncHttpRequest(x) {
-  // Actually just sleep lol
-  console.log("JS: sleeping");
-  await sleep(1000);
-  console.log("JS: slept");
+// Our async function we want to consume
+async function awaitFakeFetch(x) {
+  console.log("JS: fetching (fake)...");
+  await sleep(1000); // simulate a slow fetch request
+  console.log("JS: fetched (fake)");
   return x + 1;
 }
 
@@ -29,7 +32,7 @@ const imports = {
   env: {
     logInt,
     logString,
-    awaitAsyncHttpRequest: new WebAssembly.Suspending(awaitAsyncHttpRequest),
+    awaitFakeFetch: new WebAssembly.Suspending(awaitFakeFetch),
   },
 };
 
@@ -38,8 +41,8 @@ export const { instance } = await WebAssembly.instantiate(
   imports,
 );
 const HEAP = new Uint8Array(instance.exports.memory.buffer);
-export const pythonFunction = WebAssembly.promising(
-  instance.exports.pythonFunction,
+export const fakePyFunc = WebAssembly.promising(
+  instance.exports.fakePyFunc,
 );
 console.log("JS: Calling pythonFunction(3)");
-await pythonFunction(3);
+await fakePyFunc(3);

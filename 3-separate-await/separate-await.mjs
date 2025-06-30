@@ -17,8 +17,8 @@ function sleep(ms) {
 }
 
 function awaitInt(promise) {
-  // This is just the identity function... We need it so we can wrap it with
-  // WebAssembly.Suspending
+  // This is just the identity function...
+  // We need it so we can wrap it with WebAssembly.Suspending
   return promise;
 }
 
@@ -33,7 +33,7 @@ async function asyncHttpRequest(x) {
 async function asyncDbQuery(x) {
   // Just sleep lol
   console.log("JS: asyncDbQuery: sleeping");
-  await sleep(100);
+  await sleep(2000);
   console.log("JS: asyncDbQuery: slept");
   return x * x;
 }

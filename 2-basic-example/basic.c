@@ -1,7 +1,7 @@
 #include "common.h"
 
-WASM_IMPORT("awaitAsyncHttpRequest")
-int awaitAsyncHttpRequest(int x);
+WASM_IMPORT("awaitFakeFetch")
+int awaitFakeFetch(int x);
 
 WASM_IMPORT("logInt")
 void logInt(int value);
@@ -9,12 +9,11 @@ void logInt(int value);
 WASM_IMPORT("logString")
 void logString(const char* value);
 
-// This doesn't actually have anything to do with Python, but it would in our
-// application to the Pyodide code base.
-WASM_EXPORT("pythonFunction")
-void pythonFunction(int x) {
-    logString("About to call awaitAsyncHttpRequest");
-    int res = awaitAsyncHttpRequest(x);
+// In our real code, we would be running a Python function here
+WASM_EXPORT("fakePyFunc")
+void fakePyFunc(int x) {
+    logString("About to call awaitFakeFetch");
+    int res = awaitFakeFetch(x);
     logString("Got result:");
     logInt(res);
 }
