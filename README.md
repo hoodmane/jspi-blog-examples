@@ -1,7 +1,7 @@
 To use,
 
 1. Make sure you are using node version 24.
-2. Install Pyodide with `npm i`.
+2. Example 1 requires Pyodide. Install Pyodide with `npm i`.
 3. All of the examples must be run with `node --experimental-wasm-jspi`
 4. I have checked in the compiled webassembly, so it is not required to run the
    examples but if you want to recompile with changed C code, you'll need clang.
