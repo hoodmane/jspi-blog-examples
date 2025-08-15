@@ -6,3 +6,4 @@ To use,
 4. I have checked in the compiled webassembly, so it is not required to run the
    examples but if you want to recompile with changed C code, you'll need clang.
    I used clang 20 but older clangs will probably work too.
+5. Examples 9 and 10 require Emscripten >= 4.0.12
